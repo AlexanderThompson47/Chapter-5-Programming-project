@@ -1,41 +1,37 @@
-//this is program 2 Student line up
+//this is program 3 population bar chart
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <algorithm>
+#include <string>
+#include <iomanip>
+
 using namespace std;
-
+//you can enter whatever you want for the town name but you have to enter "People.txt" or the numbers wont show up
+//this part is where you enter the data
 int main() {
-    ifstream inputFile("LineUp.txt");
-    vector<string> names;
-    string name;
+    string townName, fileName;
+    cout << "Enter the name of the town (whatever you want): ";
+    getline(cin, townName);
+    cout << "Enter the name of the data file (People.txt or it will give error): ";
+    cin >> fileName;
+    //the error happens when you put the fileName in wrong
+    ifstream dataFile(fileName);
 
-    // Check if file is successfully opened
-    if (!inputFile) {
-        cout << "Error: Could not open the file!" << endl;
+    if (!dataFile) {
+        cerr << "Error opening file: " << fileName << endl;
         return 1;
     }
 
-    // Read names from the file
-    while (inputFile >> name) {
-        names.push_back(name);
+    cout << "\nPopulation Growth Bar Chart for " << townName << "\n" << endl;
+
+    int year, population;
+    while (dataFile >> year >> population) {
+        cout << year << " | ";
+        for (int i = 0; i < population / 1000; i++) {
+            cout << '*';
+        }
+        cout << " (" << population << ")" << endl;
     }
 
-    inputFile.close(); // Close the file
-
-    // Check if the file was empty
-    if (names.empty()) {
-        cout << "The file is empty. No students found." << endl;
-        return 1;
-    }
-
-    // Sort the names alphabetically
-    sort(names.begin(), names.end());
-
-    // Report the number of students and their positions in line
-    cout << "Number of students in the class: " << names.size() << endl;
-    cout << "Student at the front of the line: " << names.front() << endl;
-    cout << "Student at the end of the line: " << names.back() << endl;
-
+    dataFile.close();
     return 0;
 }
